@@ -59,7 +59,7 @@ var LocationYMax = 500;
 var ObjectMap = [];
 
 var getRandomNumber = function (min, max) {
-  return Math.floor((Math.random() * (max - min + 1) ) + min);
+  return Math.floor((Math.random() * (max - min + 1)) + min);
 };
 
 var getRandomItem = function (array) {
@@ -108,7 +108,7 @@ var getObjectMap = function () {
     var LocationX = getRandomNumber(LocationXMin, LocationXMax);
     var LocationY = getRandomNumber(LocationYMin, LocationYMax);
 
-    ObjectMap.push ( {
+    ObjectMap.push({
       author: {
         avatar: 'img/avatars/user' + '0' + i + '.png'
       },
@@ -143,7 +143,7 @@ var MapPins = document.querySelector('.map__pins');
 
 var TemplateMapPin = document.querySelector('template').content.querySelector('.map__pin');
 
-var RenderMapPins = function (Pin) {
+var renderMapPins = function (Pin) {
   var NewMapPins = TemplateMapPin.cloneNode(true);
   NewMapPins.querySelector('img').src = Pin.author.avatar;
   NewMapPins.style.left = (Pin.location.x) + 'px';
@@ -155,12 +155,10 @@ var RenderMapPins = function (Pin) {
 var FragmentPins = document.createDocumentFragment();
 
 for (var i = 0; i < ObjectMap.length; i++) {
-  FragmentPins.appendChild(RenderMapPins(ObjectMap[i]));
+  FragmentPins.appendChild(renderMapPins(ObjectMap[i]));
 }
 
 MapPins.appendChild(FragmentPins);
-
-
 
 var TemplateCardObject = document.querySelector('template').content.querySelector('.map__card');
 
@@ -170,7 +168,7 @@ var Type = {
   'bungalow': 'Бунгало'
 };
 
-var RenderCardObject = function (obj) {
+var renderCardObject = function (obj) {
 
   var CardObject = TemplateCardObject.cloneNode(true);
   var CardObjectFeatures = CardObject.querySelector('.popup__features');
@@ -203,9 +201,9 @@ var RenderCardObject = function (obj) {
   CardObjectFeatures.nextElementSibling.textContent = obj.offer.description;
   document.querySelector('.map').appendChild(CardObject);
 
-  var PhotoMove = function () {
+  var photoMove = function () {
     for (var j = 0; j < obj.offer.photos.length; j++) {
-      var li = document.createElement('li');
+      li = document.createElement('li');
       var img = document.createElement('img');
       img.width = 70;
       img.height = 70;
@@ -215,7 +213,7 @@ var RenderCardObject = function (obj) {
     }
     CardObjectPhoto.appendChild(PhotoFragment);
   };
-  PhotoMove();
+  photoMove();
 };
 
-RenderCardObject(ObjectMap[0]);
+renderCardObject(ObjectMap[0]);
