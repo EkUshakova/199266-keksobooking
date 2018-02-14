@@ -86,7 +86,7 @@ var getRandomFeatures = function (array) {
   var RandomFeatures = [];
 
   for (var i = 0; i < RandomFeaturesLength; i++) {
-    result.push(getRandomItem(array));
+    RandomFeatures.push(getRandomItem(array));
   }
   return getUniqueFeatures(RandomFeatures);
 };
@@ -199,8 +199,8 @@ var RenderCardObject = function (obj) {
     li.className = 'feature  feature--' + obj.offer.features[k];
     FeaturesFragment.appendChild(li);
   }
-  features.appendChild(FeaturesFragment);
-  features.nextElementSibling.textContent = obj.offer.description;
+  CardObjectFeatures.appendChild(FeaturesFragment);
+  CardObjectFeatures.nextElementSibling.textContent = obj.offer.description;
   document.querySelector('.map').appendChild(CardObject);
 
   var PhotoMove = function () {
