@@ -62,17 +62,17 @@ var getRandomNumber = function (min, max) {
   return Math.floor((Math.random() * (max - min + 1) ) + min);
 };
 
-var getRandomItem = function (array1) {
-  var RandomItem = Math.floor(Math.random() * array1.length);
-  return array1[RandomItem];
+var getRandomItem = function (array) {
+  var RandomItem = Math.floor(Math.random() * array.length);
+  return array[RandomItem];
 };
 
-var getUniqueFeatures = function (array2) {
+var getUniqueFeatures = function (array) {
   var UniqueFeatures = {};
   var ResultUniqueFeatures = [];
 
-  for (var i = 0; i < array2.length; i++) {
-    var item = array2[i];
+  for (var i = 0; i < array.length; i++) {
+    var item = array[i];
     if (UniqueFeatures[item] !== 1) {
       UniqueFeatures[item] = 1;
       ResultUniqueFeatures.push(item);
@@ -81,18 +81,18 @@ var getUniqueFeatures = function (array2) {
   return ResultUniqueFeatures;
 };
 
-var getRandomFeatures = function (array3) {
-  var RandomFeaturesLength = getRandomNumber(1, array3.length);
+var getRandomFeatures = function (array) {
+  var RandomFeaturesLength = getRandomNumber(1, array.length);
   var RandomFeatures = [];
 
-  for (var i = 0; i < randomFeaturesLength; i++) {
-    result.push(getRandomItem(array3));
+  for (var i = 0; i < RandomFeaturesLength; i++) {
+    result.push(getRandomItem(array));
   }
   return getUniqueFeatures(RandomFeatures);
 };
 
-var getRandomPhoto = function (array4) {
-  var arrCopy = array4.slice();
+var getRandomPhoto = function (arr) {
+  var arrCopy = arr.slice();
   var RandomPhoto = [];
   for (var j = 0; j < arrCopy.length; j++) {
     var RandomPhotoIndex = Math.floor(Math.random() * arrCopy.length);
@@ -159,3 +159,63 @@ for (var i = 0; i < ObjectMap.length; i++) {
 }
 
 MapPins.appendChild(FragmentPins);
+
+
+
+var TemplateCardObject = document.querySelector('template').content.querySelector('.map__card');
+
+var Type = {
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalow': 'Бунгало'
+};
+
+var RenderCardObject = function (obj) {
+
+  var CardObject = TemplateCardObject.cloneNode(true);
+  var CardObjectFeatures = CardObject.querySelector('.popup__features');
+  var CardObjectType = CardObject.querySelector('h4');
+  var CardObjectPhoto = CardObject.querySelector('.popup__pictures');
+  var PhotoFragment = document.createDocumentFragment();
+  var FeaturesFragment = document.createDocumentFragment();
+
+  CardObject.querySelector('.popup__avatar').textContent = obj.author.avatar;
+  CardObject.querySelector('h3').textContent = obj.offer.title;
+  CardObject.querySelector('small').innerHTML = obj.offer.address;
+  CardObject.querySelector('.popup__price').innerHTML = obj.offer.price + ' &#x20bd;/ночь';
+  CardObject.querySelector('h4').textContent = obj.offer.type;
+  CardObject.querySelector('.popup__features').innerHTML = '';
+  CardObject.querySelector('.popup__pictures').innerHTML = '';
+  CardObject.querySelector('.popup__features').nextElementSibling.textContent = obj.offer.description;
+
+  CardObjectType.textContent = Type[obj.offer.type];
+
+  CardObjectType.nextElementSibling.textContent = obj.offer.rooms = ' комнаты' + ' для ' + obj.offer.guests + ' гостей';
+  CardObjectType.nextElementSibling.nextElementSibling.textContent = 'Заезд после ' + obj.offer.checkin + ' ,' + 'выезд до '
+    + obj.offer.checkout;
+
+  for (var k = 0; k < obj.offer.features.length; k++) {
+    var li = document.createElement('li');
+    li.className = 'feature  feature--' + obj.offer.features[k];
+    FeaturesFragment.appendChild(li);
+  }
+  features.appendChild(FeaturesFragment);
+  features.nextElementSibling.textContent = obj.offer.description;
+  document.querySelector('.map').appendChild(CardObject);
+
+  var PhotoMove = function () {
+    for (var j = 0; j < obj.offer.photos.length; j++) {
+      var li = document.createElement('li');
+      var img = document.createElement('img');
+      img.width = 70;
+      img.height = 70;
+      li.appendChild(img);
+      img.src = obj.offer.photos[j];
+      PhotoFragment.appendChild(li);
+    }
+    CardObjectPhoto.appendChild(PhotoFragment);
+  };
+  PhotoMove();
+};
+
+RenderCardObject(ObjectMap[0]);
